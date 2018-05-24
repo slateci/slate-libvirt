@@ -1,4 +1,5 @@
 #!/bin/bash
+PATH=$PATH:/opt/slate/bin
 
 set -e
 set -o pipefail
