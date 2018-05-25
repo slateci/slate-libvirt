@@ -25,7 +25,7 @@ sudo qemu-img create -f qcow2 -b coreos_production_qemu_image.img slate.qcow2
 sudo virt-install --connect qemu:///system \
              --import \
              --name slate \
-             --ram 1024 --vcpus 1 \
+             --ram 4096 --vcpus 2 \
              --os-type=linux \
              --os-variant=virtio26 \
              --disk path=slate.qcow2,format=qcow2,bus=virtio \
