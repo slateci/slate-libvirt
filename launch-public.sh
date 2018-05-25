@@ -30,13 +30,14 @@ sudo virt-install --connect qemu:///system \
              --os-variant=virtio26 \
              --disk path=slate.qcow2,format=qcow2,bus=virtio \
              --vnc --noautoconsole \
+             --network bridge=br0 --mac="52:54:00:5c:a1:ec"\
              --print-xml > domain.xml
 
 #--network network="default" \
 #--mac="52:54:00:5c:a1:ec" \
 
 sed -ie 's|type="kvm"|type="kvm" xmlns:qemu="http://libvirt.org/schemas/domain/qemu/1.0"|' domain.xml
-sed -i "/<\/devices>/a <qemu:commandline>\n  <qemu:arg value='-fw_cfg'/>\n  <qemu:arg value='name=opt/com.coreos/config,file=/home/lincolnb/slate-libvirt/config.ign'/>\n</qemu:commandline>" domain.xml
+sed -i "/<\/devices>/a <qemu:commandline>\n  <qemu:arg value='-fw_cfg'/>\n  <qemu:arg value='name=opt/com.coreos/config,file=/kvm/slate-libvirt/config.ign'/>\n</qemu:commandline>" domain.xml
 
 sudo virsh define domain.xml
 
