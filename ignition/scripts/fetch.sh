@@ -14,7 +14,7 @@ echo "K8S_RELEASE: $K8S_RELEASE"
 echo "CFSSL_RELEASE: $CFSSL_RELEASE"
 echo "CRI_TOOLS_RELEASE: $CRI_TOOLS_RELEASE"
 
-wget -qO - "https://github.com/containernetworking/plugins/releases/download/${CNI_VERSION}/cni-plugins-amd64-${CNI_VERSION}.tgz" | tar -C /opt/slate/cni/bin -xz
+wget -qO - "https://github.com/containernetworking/plugins/releases/download/${CNI_VERSION}/cni-plugins-amd64-${CNI_VERSION}.tgz" | tar -C /opt/cni/bin -xz
 wget -qO - "https://github.com/kubernetes-incubator/cri-tools/releases/download/${CRI_TOOLS_RELEASE}/crictl-${CRI_TOOLS_RELEASE}-linux-amd64.tar.gz" | tar -C /opt/slate/bin -xz
 wget -qNP /opt/slate/bin https://storage.googleapis.com/kubernetes-release/release/${K8S_RELEASE}/bin/linux/amd64/{kubeadm,kubelet,kubectl}
 wget -qN "https://pkg.cfssl.org/${CFSSL_RELEASE}/cfssl_linux-amd64" -O /opt/slate/bin/cfssl
