@@ -1,0 +1,11 @@
+<network>
+  <name>slate</name>
+  <bridge name='virbr1' stp='on' delay='0'/>
+  <mac address='52:54:00:51:aa:7e'/>
+  <ip address='10.255.34.1' netmask='255.255.255.0'>
+    <dhcp>
+      <range start='10.255.34.2' end='10.255.34.254'/>
+      <host mac='54:52:00:5c:a1:ed' ip='10.255.34.101'/>
+    </dhcp>
+  </ip>
+</network>
