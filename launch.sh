@@ -35,7 +35,7 @@ sudo virt-install --connect qemu:///system \
              --print-xml > domain.xml
 
 sed -ie 's|type="kvm"|type="kvm" xmlns:qemu="http://libvirt.org/schemas/domain/qemu/1.0"|' domain.xml
-sed -i "/<\/devices>/a <qemu:commandline>\n  <qemu:arg value='-fw_cfg'/>\n  <qemu:arg value='name=opt/com.coreos/config,file=/home/lincolnb/slate-libvirt/config.ign'/>\n</qemu:commandline>" domain.xml
+sed -i "/<\/devices>/a <qemu:commandline>\n  <qemu:arg value='-fw_cfg'/>\n  <qemu:arg value='name=opt/com.coreos/config,file=/kvm/slate-libvirt/config.ign'/>\n</qemu:commandline>" domain.xml
 
 sudo virsh define domain.xml
 
