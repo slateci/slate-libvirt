@@ -39,7 +39,7 @@ $ ./download.sh
 The image is set to auto-login as user 'core' on the console, but you'll probably want an SSH key in there as well to SSH to the VM.
 Edit config.yaml to your liking, and then run it through the transpiler:
 ```
-ct -in-file config.yaml --files-dir ignition/ > config.ign
+./ct -in-file config.yaml --files-dir ignition/ > config.ign
 ```
 
 Finally, you'll want to edit `launch.sh` and replace the line that says `/home/lincolnb/slate-libvirt/config.ign` with the actual path of your `config.ign` file generated in the previous step, and then run it.
