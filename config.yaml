@@ -29,7 +29,7 @@
         path: "/opt/slate/scripts"
         mode: 0755
       - filesystem: "root"
-        path: "/opt/slate/cni/bin"
+        path: "/opt/cni/bin"
         mode: 0755
       - filesystem: "root"
         path: "/etc/kubernetes/pki/etcd"
@@ -38,36 +38,67 @@
         path: "/etc/kubernetes/pki/calico"
         mode: 0755
     files: 
+    #######################################
+    # Scripts                             #
+    #######################################
       - filesystem: "root"
         path: "/opt/slate/scripts/make-scratch.sh"
         mode: 0755
         contents: 
-          local: "make-scratch.sh"
+          local: "scripts/make-scratch.sh"
       - filesystem: "root"
         path: "/opt/slate/scripts/fetch.sh"
         mode: 0755
         contents: 
-          local: "fetch.sh"
+          local: "scripts/fetch.sh"
       - filesystem: "root"
         path: "/opt/slate/scripts/kubeadm.sh"
         mode: 0755
         contents: 
-          local: "kubeadm.sh"
+          local: "scripts/kubeadm.sh"
       - filesystem: "root"
         path: "/opt/slate/scripts/calico.sh"
         mode: 0755
         contents: 
-          local: "calico.sh"
+          local: "scripts/calico.sh"
       - filesystem: "root"
         path: "/opt/slate/scripts/metallb.sh"
         mode: 0755
         contents: 
-          local: "metallb.sh"
+          local: "scripts/metallb.sh"
+    #######################################
+    # Config files                        #
+    #######################################
+      - filesystem: "root"
+        path: "/opt/slate/cfg/kubeadm.yaml"
+        mode: 0755
+        contents: 
+          local: "cfg/kubeadm.yaml"
+      - filesystem: "root"
+        path: "/opt/slate/cfg/calico.yaml"
+        mode: 0755
+        contents: 
+          local: "cfg/calico.yaml"
+      - filesystem: "root"
+        path: "/opt/slate/cfg/calico-rbac.yaml"
+        mode: 0755
+        contents: 
+          local: "cfg/calico-rbac.yaml"
+      - filesystem: "root"
+        path: "/opt/slate/cfg/metallb.yaml"
+        mode: 0755
+        contents: 
+          local: "cfg/metallb.yaml"
       - filesystem: "root"
         path: "/etc/systemctl.d/nonlocalbind.conf"
         mode: 0644 
         contents:
           inline: net.ipv4.ip_nonlocal_bind=1
+      - filesystem: "root"
+        path: "/etc/profile.d/slate.sh"
+        mode: 0644 
+        contents:
+          inline: "export PATH=$PATH:/opt/slate/bin"
   systemd:
     ###############################################
     #           autologin block                   #
@@ -137,7 +168,7 @@
         contents: | 
           [Unit]
           Description=Configure Calico networking
-          After="kubeadm.service"
+          After=kubeadm.service
           [Service]
           Type=oneshot
           ExecStart=/opt/slate/scripts/calico.sh
@@ -148,7 +179,7 @@
         contents: | 
           [Unit]
           Description=Configure MetalLB
-          After="calico-cfg.service"
+          After=calico-cfg.service
           [Service]
           Type=oneshot
           ExecStart=/opt/slate/scripts/metallb.sh
@@ -167,7 +198,7 @@
           ExecStartPre=/usr/bin/mkdir -p /opt/cni/bin
           ExecStartPre=/usr/bin/mkdir -p /etc/kubernetes/manifests
           ExecStartPre=/usr/bin/mkdir -p /var/log/containers
-          ExecStart=/opt/bin/kubelet
+          ExecStart=/opt/slate/bin/kubelet
           Restart=always
           StartLimitInterval=0
           RestartSec=10
@@ -186,4 +217,4 @@
               Environment="KUBELET_CADVISOR_ARGS=--cadvisor-port=0"
               Environment="KUBELET_CERTIFICATE_ARGS=--rotate-certificates=true"
               ExecStart=
-              ExecStart=/opt/bin/kubelet $KUBELET_KUBECONFIG_ARGS $KUBELET_SYSTEM_PODS_ARGS $KUBELET_NETWORK_ARGS $KUBELET_DNS_ARGS $KUBELET_AUTHZ_ARGS $KUBELET_CGROUP_ARGS $KUBELET_CADVISOR_ARGS $KUBELET_CERTIFICATE_ARGS $KUBELET_EXTRA_ARGS
+              ExecStart=/opt/slate/bin/kubelet $KUBELET_KUBECONFIG_ARGS $KUBELET_SYSTEM_PODS_ARGS $KUBELET_NETWORK_ARGS $KUBELET_DNS_ARGS $KUBELET_AUTHZ_ARGS $KUBELET_CGROUP_ARGS $KUBELET_CADVISOR_ARGS $KUBELET_CERTIFICATE_ARGS $KUBELET_EXTRA_ARGS
