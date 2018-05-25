@@ -2,9 +2,14 @@
 
 #https://coreos.com/os/docs/latest/booting-with-libvirt.html
 
-# vbox interferes
-sudo systemctl stop vboxdrv
-sudo modprobe -r vboxdrv vboxnetflt vboxpci vboxnetadp
+# stop any running vbox
+#sudo systemctl stop vboxdrv
+#sudo modprobe -r vboxdrv vboxnetflt vboxpci vboxnetadp
+
+###### need this interface added
+# sudo virsh net-define network.xml
+# sudo virsh net-start slate
+# sudo virsh net-autostart slate
 
 sudo virsh destroy slate
 sudo virsh undefine slate
@@ -24,7 +29,7 @@ sudo virt-install --connect qemu:///system \
              --os-type=linux \
              --os-variant=virtio26 \
              --disk path=slate.qcow2,format=qcow2,bus=virtio \
-             --mac="52:54:00:5c:a1:ed" \
+             --mac="52:54:00:5c:a1:ec" \
              --vnc --noautoconsole \
              --network network="default" \
              --print-xml > domain.xml
@@ -34,5 +39,10 @@ sed -i "/<\/devices>/a <qemu:commandline>\n  <qemu:arg value='-fw_cfg'/>\n  <qem
 
 sudo virsh define domain.xml
 
+# add an interface on the 'slate' network 
+# this is the equivalent of VBox host-only
+sudo virsh attach-interface --domain slate --type network --mac "52:54:00:5c:a1:ed" --source slate --config
+
 sudo virsh start slate
+
 sudo virsh console slate
