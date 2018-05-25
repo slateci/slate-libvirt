@@ -12,7 +12,12 @@ This may work on stock qemu/kvm, but you can install the CentOS Enterprise Virtu
 
 Then:
 ```
-yum install qemu-kvm-ev
+yum install qemu-kvm-ev libvirt
+```
+
+Otherwise, install the `qemu-kvm` package if `qemu-kvm-ev` is not available. You will probably need to start libvirt as well:
+```
+systemctl start libvirtd
 ```
 
 ## Define a SLATE "host-only" network
